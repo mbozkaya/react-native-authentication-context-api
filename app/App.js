@@ -1,102 +1,90 @@
-import React from 'react';
-import Main from './Main';
-import { DefaultTheme, Provider as PaperProvider, configureFonts, Appbar, Card, Button } from 'react-native-paper';
-import { Platform, View } from 'react-native';
+import React, { createContext, useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Home, Login, Register } from './screens';
+import fakeApi from './api/fakeApi';
 
-const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
+const Stack = createNativeStackNavigator();
 
-const fontConfig = {
-  web: {
-    regular: {
-      fontFamily: 'sans-serif',
-      fontWeight: 'normal',
-    },
-    medium: {
-      fontFamily: 'sans-serif-medium',
-      fontWeight: 'normal',
-    },
-    light: {
-      fontFamily: 'sans-serif-light',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'sans-serif-thin',
-      fontWeight: 'normal',
-    },
-  },
-  ios: {
-    regular: {
-      fontFamily: 'sans-serif',
-      fontWeight: 'normal',
-    },
-    medium: {
-      fontFamily: 'sans-serif-medium',
-      fontWeight: 'normal',
-    },
-    light: {
-      fontFamily: 'sans-serif-light',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'sans-serif-thin',
-      fontWeight: 'normal',
-    },
-  },
-  android: {
-    regular: {
-      fontFamily: 'sans-serif',
-      fontWeight: 'normal',
-    },
-    medium: {
-      fontFamily: 'sans-serif-medium',
-      fontWeight: 'normal',
-    },
-    light: {
-      fontFamily: 'sans-serif-light',
-      fontWeight: 'normal',
-    },
-    thin: {
-      fontFamily: 'sans-serif-thin',
-      fontWeight: 'normal',
-    },
-  }
-};
+export const AuthContext = createContext();
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: 'green',
-    accent: 'yellow',
-  },
-  fonts: configureFonts(fontConfig),
-};
+const App = () => {
 
-export default function App() {
+  const [state, setState] = useState({
+    user: null,
+    isAuth: false,
+    isLoading: false,
+  });
+
+  const checkAuth = async () => {
+    const response = await fakeApi.checkAuth();
+    setState({
+      ...state,
+      isAuth: response,
+    });
+  };
+
+  const login = async (email, password) => {
+    setState({
+      ...state,
+      isLoading: true,
+    });
+    const response = await fakeApi.login(email, password);
+
+    setState({
+      ...state,
+      isLoading: false,
+      isAuth: response.success,
+      ...response,
+    });
+
+    return response;
+  };
+
+  const register = async (email, password) => {
+    setState({
+      ...state,
+      isLoading: true,
+    });
+    const response = await fakeApi.register(email, password);
+
+    setState({
+      ...state,
+      isLoading: false,
+    });
+
+    return response;
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
   return (
-    <PaperProvider theme={theme} >
-      <Appbar.Header>
-        <Appbar.Content title="Title" subtitle={'Subtitle'} />
-        <Appbar.Action icon="magnify" onPress={() => { }} />
-        <Appbar.Action icon={MORE_ICON} onPress={() => { }} />
-      </Appbar.Header>
-      <Card>
-        <Card.Actions
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            justifyContent: 'center'
-          }}
-        >
-          <Main />
-          <View>
-            <Button onPress={() => { console.log('cancel'); }}>Cancel</Button>
-            <Button onPress={() => { console.log('ok'); }}>Ok</Button>
-          </View>
-        </Card.Actions>
-      </Card>
-    </PaperProvider>
+    <AuthContext.Provider
+      value={{
+        ...state,
+        login,
+        register,
+      }}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {
+            state.isAuth ? (
+              <Stack.Screen name="Home" component={Home} />
+            ) :
+              (
+                <>
+                  <Stack.Screen name="Login" component={Login} />
+                  <Stack.Screen name="Register" component={Register} />
+                </>
+              )
+          }
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
-}
+};
+
+export default App;
 
