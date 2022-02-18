@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: '100%',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         height: 300
     },
     textInput: {

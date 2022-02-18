@@ -10,7 +10,7 @@ const Register = ({ navigation }) => {
                 Register to the App
             </Text>
             <RegisterForm navigation={navigation} />
-            <Text style={styles.textOr}>or do you have an account?</Text>
+            <Text style={styles.textOr}>do you have an account?</Text>
             <Button
                 mode="contained"
                 onPress={() => navigation.push('Login')}
