@@ -30,7 +30,7 @@ Here are libraries I used extra
 
 ![Login](./images/login.jpeg)
 ![Signup](./images/login.jpeg)
-![Home](./images/login.jpg)
+![Home](./images/home.jpeg)
 
 ## Contributing
 Pull requests are welcome. 
