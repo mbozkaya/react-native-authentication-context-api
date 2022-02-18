@@ -56,6 +56,14 @@ const App = () => {
     return response;
   };
 
+  const logout = () => {
+    fakeApi.logout();
+    setState({
+      ...state,
+      isAuth: false,
+    });
+  };
+
   useEffect(() => {
     checkAuth();
   }, []);
@@ -66,6 +74,7 @@ const App = () => {
         ...state,
         login,
         register,
+        logout,
       }}>
       <NavigationContainer>
         <Stack.Navigator>
