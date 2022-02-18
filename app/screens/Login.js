@@ -1,14 +1,14 @@
 import React from 'react';
-import { Text, View, StyleSheet, TextInput } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Button, Headline } from 'react-native-paper';
 import LoginForm from '../components/LoginForm';
 
 const Login = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <Text style={styles.textHeader}>
+            <Headline>
                 Welcome the App
-            </Text>
+            </Headline>
             <LoginForm navigation={navigation} />
             <Text style={styles.textOr}>or</Text>
             <Button
@@ -29,11 +29,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#00000f'
-    },
-    textHeader: {
-        padding: 50,
-        fontSize: 24
+        backgroundColor: '#00000f',
+        overflow: 'scroll'
     },
     textOr: {
         padding: 10,
