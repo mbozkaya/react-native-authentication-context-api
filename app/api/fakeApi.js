@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const wait = (time) => new Promise((res) => setTimeout(res, time));
+
 const storageKeys = {
     allUsers: '@allUsers',
     currentUser: '@currentUser',
@@ -32,6 +34,8 @@ export default {
         const allUsers = await getItemByKey(storageKeys.allUsers);
         const userIndex = allUsers.findIndex((user) => user.email === email && user.password === password);
 
+        await wait(500);
+
         if (userIndex > -1) {
             setItem(storageKeys.allUsers, allUsers);
             setItem(storageKeys.currentUser, allUsers[userIndex]);
@@ -49,6 +53,8 @@ export default {
     },
     register: async (email, password) => {
         const allUsers = await getItemByKey(storageKeys.allUsers);
+
+        await wait(500);
 
         if (allUsers.find((user) => user.email === email)) {
             return {
@@ -70,10 +76,12 @@ export default {
     },
     checkAuth: async () => {
         const currentUser = await getItemByKey(storageKeys.currentUser);
+        await wait(500);
         return !currentUser;
     },
-    logOut: async () => {
+    logout: async () => {
         try {
+            await wait(500);
             AsyncStorage.removeItem(storageKeys.currentUser);
         } catch (e) {
             // TODO saving error
