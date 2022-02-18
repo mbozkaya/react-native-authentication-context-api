@@ -29,7 +29,7 @@ Here are libraries I used extra
 ### Screens
 
 ![Login](./images/login.jpeg)
-![Signup](./images/login.jpeg)
+![Signup](./images/register.jpeg)
 ![Home](./images/home.jpeg)
 
 ## Contributing
@@ -38,5 +38,3 @@ Pull requests are welcome.
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
-#
-#
